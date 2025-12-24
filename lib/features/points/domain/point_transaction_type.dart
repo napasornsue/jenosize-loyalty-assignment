@@ -1,0 +1,4 @@
+enum PointTransactionType {
+  joinCampaign,
+  referral,
+}

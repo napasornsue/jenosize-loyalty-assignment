@@ -1,0 +1,4 @@
+enum PointTransactionStatus {
+  pending,
+  completed,
+}
