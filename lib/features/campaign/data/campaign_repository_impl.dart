@@ -8,12 +8,12 @@ class CampaignRepositoryImpl implements CampaignRepository{
   final _storage = LocalStorageService();
 
   final List<Campaign> _campaigns = [
-    Campaign(id: '1', title: 'Summer Sale', description: 'Get 20% off on all items during our Summer Sale!', ctaText: 'Join Now', imageUrl: 'https://api.deepai.org/job-view-file/53a0effe-a441-461b-8a91-cd0a1185a014/outputs/output.jpg', isJoined: false),
-    Campaign(id: '2', title: 'Winter Wonderland', description: 'Enjoy exclusive deals this winter season!', ctaText: 'Join Now', imageUrl: 'https://api.deepai.org/job-view-file/8e3f8d18-6585-44e0-b80e-bdb6ac39385b/outputs/output.jpg', isJoined: false),
-    Campaign(id: '3', title: 'Spring Fling', description: 'Celebrate spring with special discounts!', ctaText: 'Join Now', imageUrl: 'https://api.deepai.org/job-view-file/fb8c6e7f-825f-4ca9-b6e8-e397998f5356/outputs/output.jpg', isJoined: false),
-    Campaign(id: '4', title: 'Holiday Specials', description: 'Unwrap amazing offers this holiday season!', ctaText: 'Join Now', imageUrl: 'https://api.deepai.org/job-view-file/3933f403-8d68-497c-ba8a-d6f410a274c5/outputs/output.jpg', isJoined: false),
-    Campaign(id: '5', title: 'Back to School', description: 'Prepare for the new school year with great deals!', ctaText: 'Join Now', imageUrl: 'https://api.deepai.org/job-view-file/be229edf-3681-401c-bafa-0704a98f7a42/outputs/output.jpg', isJoined: false),
-    Campaign(id: '6', title: 'Black Friday Bonanza', description: 'Don\'t miss out on our Black Friday extravaganza!', ctaText: 'Join Now', imageUrl: 'https://api.deepai.org/job-view-file/7584f1ce-0fc4-4d95-92a6-453a221b7841/outputs/output.jpg', isJoined: false),
+    Campaign(id: '1', title: 'Summer Sale', description: 'Get 20% off on all items during our Summer Sale!', ctaText: 'Join Now', imageUrl: 'https://community.thriveglobal.com/wp-content/uploads/2020/06/summer.jpg', isJoined: false),
+    Campaign(id: '2', title: 'Winter Wonderland', description: 'Enjoy exclusive deals this winter season!', ctaText: 'Join Now', imageUrl: 'https://finland.fi/wp-content/uploads/2015/05/3708-talvi-6_600_400-jpg.jpg', isJoined: false),
+    Campaign(id: '3', title: 'Spring Fling', description: 'Celebrate spring with special discounts!', ctaText: 'Join Now', imageUrl: 'https://cdn.shopify.com/s/files/1/0778/2679/files/spring_trees.jpg?v=1616252131', isJoined: false),
+    Campaign(id: '4', title: 'Holiday Specials', description: 'Unwrap amazing offers this holiday season!', ctaText: 'Join Now', imageUrl: 'https://media.product.which.co.uk/prod/images/original/fa9a529f543e-best-and-worst-package-holiday-providerslead.jpg', isJoined: false),
+    Campaign(id: '5', title: 'Back to School', description: 'Prepare for the new school year with great deals!', ctaText: 'Join Now', imageUrl: 'https://img.freepik.com/free-vector/vector-cartoon-illustration-school-building-green-lawn-road-trees-educalion-l_134830-1588.jpg?semt=ais_hybrid&w=740&q=80', isJoined: false),
+    Campaign(id: '6', title: 'Black Friday Bonanza', description: 'Don\'t miss out on our Black Friday extravaganza!', ctaText: 'Join Now', imageUrl: 'https://cdn.shopify.com/s/files/1/0504/1094/6753/files/why-is-it-called-black-friday-1.jpg?v=1762762579', isJoined: false),
   ];
 
   @override
