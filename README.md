@@ -16,14 +16,14 @@ A prototype mobile application for a Loyalty Platform, developed with Flutter as
 ## Screenshots
 
 ### Home Screen
-![Home](assets/screenshots/home.jpg)
+<img src="assets/screenshots/home.jpg" alt="Home" width="270"/>
 
 ### Membership Screen
-![Non-Member Membership](assets/screenshots/non-membership.jpg)
-![Membership](assets/screenshots/membership.jpg)
+<img src="assets/screenshots/non-membership.jpg" alt="Non-Membership" width="270"/>
+<img src="assets/screenshots/membership.jpg" alt="Membership" width="270"/>
 
 ### Points Transaction Screen
-![Points](assets/screenshots/points.jpg)
+<img src="assets/screenshots/points.jpg" alt="Points" width="270"/>
 
 ---
 
