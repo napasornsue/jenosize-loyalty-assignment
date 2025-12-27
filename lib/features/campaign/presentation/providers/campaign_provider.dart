@@ -6,6 +6,7 @@ import 'package:jenosize_loyalty_assignment/features/campaign/domain/campaign_re
 import 'package:jenosize_loyalty_assignment/features/campaign/domain/usecases/join_campaign_use_case.dart';
 import 'package:jenosize_loyalty_assignment/features/points/data/point_transaction_repository_impl.dart';
 import 'package:jenosize_loyalty_assignment/features/points/domain/point_transaction_repository.dart';
+import 'package:jenosize_loyalty_assignment/features/points/presentation/providers/point_transaction_provider.dart';
 
 final campaignRepositoryProvider = Provider<CampaignRepository>((ref) {
   return CampaignRepositoryImpl();
@@ -22,7 +23,6 @@ final joinCampaignUseCaseProvider = Provider<JoinCampaignUseCase>((ref) {
   final pointRepo = ref.read(pointTransactionRepositoryProvider);
   return JoinCampaignUseCase(campaignRepo, pointRepo);
 });
-
 
 class CampaignState {
   final Status status;
@@ -75,6 +75,7 @@ class CampaignNotifier extends Notifier<CampaignState> {
     try {
       await _joinCampaignUseCase.call(campaignId);
       await getAllCampaigns();
+      ref.read(pointTransactionProvider.notifier).load();
     } catch (e) {
       state = CampaignState(status: Status.error, error: e.toString());
     }

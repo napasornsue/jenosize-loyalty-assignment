@@ -5,6 +5,7 @@ import 'package:jenosize_loyalty_assignment/core/presentation/status.dart';
 import 'package:jenosize_loyalty_assignment/core/services/share_service.dart';
 import 'package:jenosize_loyalty_assignment/features/membership/domain/membership.dart';
 import 'package:jenosize_loyalty_assignment/features/membership/presentation/providers/membership_provider.dart';
+import 'package:jenosize_loyalty_assignment/features/membership/presentation/providers/welcome_message_provider.dart';
 
 class MembershipScreen extends ConsumerStatefulWidget {
   const MembershipScreen({super.key});
@@ -27,10 +28,8 @@ class _MembershipScreenState extends ConsumerState<MembershipScreen> {
     final state = ref.watch(membershipProvider);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Membership"),
-      ),
-      body:  _buildBody(state),
+      appBar: AppBar(title: const Text("Membership")),
+      body: _buildBody(state),
     );
   }
 
@@ -47,7 +46,7 @@ class _MembershipScreenState extends ConsumerState<MembershipScreen> {
         } else {
           return _buildMember(context, state.membership!);
         }
-      }
+    }
   }
 
   Widget _buildNonMember(BuildContext context, MembershipState state) {
@@ -75,15 +74,15 @@ class _MembershipScreenState extends ConsumerState<MembershipScreen> {
           onPressed: state.status == Status.loading
               ? null
               : () async {
-            final name = _nameController.text.trim();
-            if (name.isEmpty) return;
-            await ref.read(membershipProvider.notifier).joinMembership(name);
-            _nameController.clear();
-          },
+                  final name = _nameController.text.trim();
+                  if (name.isEmpty) return;
+                  await ref
+                      .read(membershipProvider.notifier)
+                      .joinMembership(name);
+                  _nameController.clear();
+                },
           child: Text(
-            state.status == Status.loading
-                ? 'Joining...'
-                : 'Join Membership',
+            state.status == Status.loading ? 'Joining...' : 'Join Membership',
           ),
         ),
       ],
@@ -91,20 +90,12 @@ class _MembershipScreenState extends ConsumerState<MembershipScreen> {
   }
 
   Widget _buildMember(BuildContext context, Membership membership) {
-    final formattedDate =
-    DateFormat('dd MMM yyyy').format(membership.joinedAt);
+    final formattedDate = DateFormat('dd MMM yyyy').format(membership.joinedAt);
     final shareService = ref.watch(shareServiceProvider);
-
-    final messages = [
-      "Welcome back, ${membership.name}!",
-      "Good to see you again, ${membership.name}!",
-      "We missed you, ${membership.name}!",
-    ];
-
-    final welcomeText = (messages..shuffle()).first;
+    final welcomeText = ref.watch(welcomeMessageProvider(membership.name));
 
     return Scaffold(
-      backgroundColor: Colors.deepPurple.shade50,  // ⭐ พื้นหลังทั้งหน้า
+      backgroundColor: Colors.deepPurple.shade50,
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Center(
@@ -112,26 +103,29 @@ class _MembershipScreenState extends ConsumerState<MembershipScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-
                 ClipRRect(
                   borderRadius: BorderRadius.circular(16),
                   child: Image.network(
                     'https://media.istockphoto.com/id/1173780314/vector/friends.jpg?s=612x612&w=0&k=20&c=PPBl_BRTqW3OyyBUzKO-tT3E6pONGZE0Xg1usLsrm18=',
                     height: 120,
-                    width: 120,
+                    width: 240,
                     fit: BoxFit.cover,
                   ),
                 ),
 
-                const SizedBox(height: 16),
+                const SizedBox(height: 24),
 
-                Text(
-                  welcomeText,
-                  style: const TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.bold,
+                welcomeText.when(
+                  data: (msg) => Text(
+                    msg,
+                    style: const TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    textAlign: TextAlign.center,
                   ),
-                  textAlign: TextAlign.center,
+                  loading: () => const CircularProgressIndicator(),
+                  error: (e, _) => Text('Hello ${membership.name}'),
                 ),
 
                 const SizedBox(height: 20),
@@ -145,15 +139,13 @@ class _MembershipScreenState extends ConsumerState<MembershipScreen> {
                   child: Padding(
                     padding: const EdgeInsets.all(20),
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,  // ← ชิดซ้าย
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Text.rich(
                           TextSpan(
                             text: "Member ID: ",
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                            ),
+                            style: const TextStyle(fontWeight: FontWeight.bold),
                             children: [
                               TextSpan(
                                 text: membership.id,
@@ -170,9 +162,7 @@ class _MembershipScreenState extends ConsumerState<MembershipScreen> {
                         Text.rich(
                           TextSpan(
                             text: "Name: ",
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                            ),
+                            style: const TextStyle(fontWeight: FontWeight.bold),
                             children: [
                               TextSpan(
                                 text: membership.name,
@@ -189,9 +179,7 @@ class _MembershipScreenState extends ConsumerState<MembershipScreen> {
                         Text.rich(
                           TextSpan(
                             text: "Joined: ",
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                            ),
+                            style: const TextStyle(fontWeight: FontWeight.bold),
                             children: [
                               TextSpan(
                                 text: formattedDate,
@@ -211,7 +199,7 @@ class _MembershipScreenState extends ConsumerState<MembershipScreen> {
 
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.purple.shade300,
+                    backgroundColor: const Color(0xFF7B5CF5),
                     foregroundColor: Colors.white,
                     padding: const EdgeInsets.symmetric(
                       horizontal: 24,
@@ -236,5 +224,4 @@ class _MembershipScreenState extends ConsumerState<MembershipScreen> {
       ),
     );
   }
-
 }

@@ -5,4 +5,5 @@ abstract class PointTransactionRepository {
   Future<List<PointTransaction>> getPointTransactions();
   Future<void> addPointTransaction(PointTransaction transaction);
   Future<void> updatePointTransactionStatus(String transactionId, PointTransactionStatus status);
+  Future<int> getPoints();
 }

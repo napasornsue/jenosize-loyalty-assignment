@@ -32,7 +32,7 @@ class MembershipNotifier extends Notifier<MembershipState> {
   MembershipState build() {
     _repository = ref.read(membershipRepositoryProvider);
     _init();
-    return const MembershipState();
+    return const MembershipState(status: Status.loading);
   }
 
   Future<void> _init() async {
@@ -40,7 +40,6 @@ class MembershipNotifier extends Notifier<MembershipState> {
   }
 
   Future<void> getMembership() async {
-    state = const MembershipState(status: Status.loading);
     try {
       final membership = await _repository.getMembership();
       state = MembershipState(status: Status.success, membership: membership);

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jenosize_loyalty_assignment/features/campaign/presentation/screens/home_screen.dart';
 import 'package:jenosize_loyalty_assignment/features/membership/presentation/screens/membership_screen.dart';
-import 'package:jenosize_loyalty_assignment/features/points/presentation/point_transaction_screen.dart';
+import 'package:jenosize_loyalty_assignment/features/points/presentation/screens/point_transaction_screen.dart';
 
 class MainScreen extends StatefulWidget{
   const MainScreen({super.key});
