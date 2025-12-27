@@ -61,6 +61,7 @@ class PointTransactionNotifier extends Notifier<PointTransactionState> {
     try {
       final points = await _repository.getPoints();
       final transactions = await _repository.getPointTransactions();
+      transactions.sort((a, b) => b.updatedAt.compareTo(a.updatedAt));
       state = PointTransactionState(
         status: Status.success,
         points: points,
