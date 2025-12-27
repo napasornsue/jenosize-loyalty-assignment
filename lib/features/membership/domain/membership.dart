@@ -4,15 +4,15 @@ class Membership {
   final int points;
   final DateTime joinedAt;
   final List<String> joinedCampaigns;
-  final String referralCode;
 
   Membership({
     required this.id,
     required this.name,
-    required this.points,
-    required this.referralCode,
+    int? points,
     DateTime? joinedAt,
     List<String>? joinedCampaigns,
-  }) :  joinedAt = joinedAt ?? DateTime.now(),
-        joinedCampaigns = joinedCampaigns ?? [];
+  }) : points = points ?? 0,
+       joinedAt = joinedAt ?? DateTime.now(),
+       joinedCampaigns = joinedCampaigns ?? [];
+
 }

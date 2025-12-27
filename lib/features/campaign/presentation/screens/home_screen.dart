@@ -26,64 +26,80 @@ class HomeScreen extends ConsumerWidget{
         return Center(child: Text(state.error ?? 'Something went wrong'));
       case Status.success:
       case Status.initial:
-        return ListView.builder(
-          itemCount: state.campaigns.length,
-          itemBuilder: (context, index) {
-            final campaign = state.campaigns[index];
-            return Card(
-              margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              clipBehavior: Clip.hardEdge,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Image.network(
-                    campaign.imageUrl,
-                    height: 180,
-                    fit: BoxFit.cover,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(12.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          campaign.title,
-                          style: const TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          ),
+      return ListView.builder(
+        itemCount: state.campaigns.length,
+        itemBuilder: (context, index) {
+          final campaign = state.campaigns[index];
+          return Card(
+            margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            clipBehavior: Clip.hardEdge,
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Image.network(
+                  campaign.imageUrl,
+                  height: 180,
+                  fit: BoxFit.cover,
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        campaign.title,
+                        style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
                         ),
-                        const SizedBox(height: 6),
-                        Text(
-                          campaign.description,
-                          style: const TextStyle(fontSize: 14, color: Colors.grey),
-                        ),
-                        const SizedBox(height: 12),
-                        Align(
-                          alignment: Alignment.centerRight,
-                          child: campaign.isJoined
-                              ? const Text(
-                            'Joined',
-                            style: TextStyle(color: Colors.green),
-                          )
-                              : ElevatedButton(
-                            onPressed: () async {
+                      ),
+                      const SizedBox(height: 6),
+                      Text(
+                        campaign.description,
+                        style: const TextStyle(fontSize: 14, color: Colors.grey),
+                      ),
+                      const SizedBox(height: 12),
+                      Center(
+                        child: SizedBox(
+                          width: double.infinity,
+                          child: ElevatedButton(
+                            onPressed: campaign.isJoined
+                                ? null
+                                : () async {
                               await ref
                                   .read(campaignProvider.notifier)
                                   .joinCampaign(campaign.id);
                             },
-                            child: const Text('Join Now'),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: campaign.isJoined
+                                  ? Colors.grey
+                                  : Colors.deepPurple,
+                              foregroundColor: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                if (campaign.isJoined)
+                                  const Icon(Icons.check, size: 16),
+                                if (campaign.isJoined) const SizedBox(width: 4),
+                                Text(campaign.isJoined ? 'Joined' : 'Join Now'),
+                              ],
+                            ),
                           ),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
-            );
-          },
-        );
+                ),
+              ],
+            ),
+          );
+        },
+      );
       default:
         return const SizedBox.shrink();
     }
