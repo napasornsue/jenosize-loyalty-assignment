@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:jenosize_loyalty_assignment/core/presentation/status.dart';
+import 'package:jenosize_loyalty_assignment/core/providers/bottom_nav_provider.dart';
 import 'package:jenosize_loyalty_assignment/features/campaign/presentation/providers/campaign_provider.dart';
+import 'package:jenosize_loyalty_assignment/features/membership/presentation/providers/membership_provider.dart';
+import 'package:jenosize_loyalty_assignment/features/membership/presentation/screens/membership_screen.dart';
 
 class HomeScreen extends ConsumerWidget{
   const HomeScreen({super.key});
@@ -66,10 +69,13 @@ class HomeScreen extends ConsumerWidget{
                           child: ElevatedButton(
                             onPressed: campaign.isJoined
                                 ? null
-                                : () async {
-                              await ref
-                                  .read(campaignProvider.notifier)
-                                  .joinCampaign(campaign.id);
+                                : () {
+                              final membershipState = ref.read(membershipProvider);
+                              if (membershipState.membership == null) {
+                                ref.read(bottomNavIndexProvider.notifier).setIndex(1);
+                                return;
+                              }
+                              ref.read(campaignProvider.notifier).joinCampaign(campaign.id);
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: campaign.isJoined

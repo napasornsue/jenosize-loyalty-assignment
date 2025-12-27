@@ -1,37 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:jenosize_loyalty_assignment/features/campaign/presentation/screens/home_screen.dart';
 import 'package:jenosize_loyalty_assignment/features/membership/presentation/screens/membership_screen.dart';
 import 'package:jenosize_loyalty_assignment/features/points/presentation/screens/point_transaction_screen.dart';
+import '../providers/bottom_nav_provider.dart';
 
-class MainScreen extends StatefulWidget{
+class MainScreen extends ConsumerWidget{
   const MainScreen({super.key});
 
   @override
-  _MainScreenState createState() => _MainScreenState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final currentIndex = ref.watch(bottomNavIndexProvider);
+    final screens = [
+      const HomeScreen(),
+      const MembershipScreen(),
+      const PointTransactionScreen(),
+    ];
 
-class _MainScreenState extends State<MainScreen> {
-  int _selectedIndex = 0;
-
-  final List<Widget> _screens = [
-    HomeScreen(),
-    MembershipScreen(),
-    PointTransactionScreen(),
-  ];
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
     return Scaffold(
-      body: _screens[_selectedIndex],
+      body: screens[currentIndex],
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
+        currentIndex: currentIndex,
+        onTap: (index) => ref.read(bottomNavIndexProvider.notifier).setIndex(index),
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),

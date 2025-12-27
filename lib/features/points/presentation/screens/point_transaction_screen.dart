@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:jenosize_loyalty_assignment/core/presentation/status.dart';
 import 'package:jenosize_loyalty_assignment/features/points/domain/point_transaction.dart';
+import 'package:jenosize_loyalty_assignment/features/points/domain/point_transaction_status.dart';
 import 'package:jenosize_loyalty_assignment/features/points/presentation/providers/point_transaction_provider.dart';
 
 class PointTransactionScreen extends ConsumerWidget {
@@ -99,15 +100,20 @@ class PointTransactionScreen extends ConsumerWidget {
 
   Widget _buildTransactionTile(PointTransaction tx) {
     final date = DateFormat('dd MMM yyyy • HH:mm').format(tx.updatedAt);
+    final isPending = tx.status == PointTransactionStatus.pending;
+    final color = isPending ? Colors.grey : Colors.black;
+    final pointsColor = isPending
+        ? Colors.grey
+        : (tx.points >= 0 ? Colors.green : Colors.red);
 
     return ListTile(
       leading: Icon(
         tx.points >= 0 ? Icons.add_circle : Icons.remove_circle,
-        color: tx.points >= 0 ? Colors.green : Colors.red,
+        color: pointsColor,
       ),
       title: Text(
-        tx.description,
-        style: const TextStyle(fontWeight: FontWeight.bold),
+        isPending ? '${tx.description} (Pending)' : tx.description,
+        style: TextStyle(fontWeight: FontWeight.bold, color: color),
       ),
       subtitle: Text(date),
       trailing: Text(
@@ -115,7 +121,7 @@ class PointTransactionScreen extends ConsumerWidget {
         style: TextStyle(
           fontSize: 16,
           fontWeight: FontWeight.bold,
-          color: tx.points >= 0 ? Colors.green : Colors.red,
+          color: pointsColor,
         ),
       ),
     );

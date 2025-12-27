@@ -22,13 +22,15 @@ class PointTransactionRepositoryImpl implements PointTransactionRepository{
     list.add(jsonEncode(transaction.toJson()));
     await _storage.prefs.setStringList(SharedPreferencesKeys.pointTransactions, list);
 
-    // add points to current balance
-    final current = await getPoints();
-    final updated = current + transaction.points;
-    await _storage.prefs.setInt(
-      SharedPreferencesKeys.membershipPoints,
-      updated,
-    );
+    // add points to current balance if status is completed
+    if (transaction.status == PointTransactionStatus.completed) {
+      final current = await getPoints();
+      final updated = current + transaction.points;
+      await _storage.prefs.setInt(
+        SharedPreferencesKeys.membershipPoints,
+        updated,
+      );
+    }
   }
 
   @override

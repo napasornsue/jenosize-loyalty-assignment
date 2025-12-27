@@ -50,42 +50,80 @@ class _MembershipScreenState extends ConsumerState<MembershipScreen> {
   }
 
   Widget _buildNonMember(BuildContext context, MembershipState state) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        const Text(
-          'Become a Member',
-          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            const SizedBox(height: 24),
+
+            ClipRRect(
+              borderRadius: BorderRadius.circular(16),
+              child: Image.network(
+                'https://media.istockphoto.com/id/1173780314/vector/friends.jpg?s=612x612&w=0&k=20&c=PPBl_BRTqW3OyyBUzKO-tT3E6pONGZE0Xg1usLsrm18=',
+                height: 150,
+                width: double.infinity,
+                fit: BoxFit.cover,
+              ),
+            ),
+
+            const SizedBox(height: 16),
+
+            const Text(
+              'Become a Member',
+              style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 12),
+            const Text(
+              'Join now to enjoy exclusive deals, rewards, and start collecting points!',
+              textAlign: TextAlign.center,
+            ),
+
+            const SizedBox(height: 24),
+
+            TextField(
+              controller: _nameController,
+              decoration: const InputDecoration(
+                labelText: 'Enter your name',
+                border: OutlineInputBorder(),
+                prefixIcon: Icon(Icons.person),
+              ),
+            ),
+
+            const SizedBox(height: 24),
+
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.deepPurple,
+                foregroundColor: Colors.white,
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                textStyle: const TextStyle(fontSize: 18),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+              onPressed: state.status == Status.loading
+                  ? null
+                  : () async {
+                final name = _nameController.text.trim();
+                if (name.isEmpty) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Please enter your name')),
+                  );
+                  return;
+                }
+                await ref.read(membershipProvider.notifier).joinMembership(name);
+                _nameController.clear();
+              },
+              child: Text(
+                state.status == Status.loading ? 'Joining...' : 'Join Membership',
+              ),
+            ),
+          ],
         ),
-        const SizedBox(height: 12),
-        const Text(
-          'Join now to enjoy exclusive deals and rewards across fashion, gourmet dining, beach getaways, and city festivals.',
-        ),
-        const SizedBox(height: 24),
-        TextField(
-          controller: _nameController,
-          decoration: const InputDecoration(
-            labelText: 'Enter your name',
-            border: OutlineInputBorder(),
-          ),
-        ),
-        const SizedBox(height: 16),
-        ElevatedButton(
-          onPressed: state.status == Status.loading
-              ? null
-              : () async {
-                  final name = _nameController.text.trim();
-                  if (name.isEmpty) return;
-                  await ref
-                      .read(membershipProvider.notifier)
-                      .joinMembership(name);
-                  _nameController.clear();
-                },
-          child: Text(
-            state.status == Status.loading ? 'Joining...' : 'Join Membership',
-          ),
-        ),
-      ],
+      ),
     );
   }
 
@@ -209,7 +247,8 @@ class _MembershipScreenState extends ConsumerState<MembershipScreen> {
                       borderRadius: BorderRadius.circular(12),
                     ),
                   ),
-                  onPressed: () {
+                  onPressed: () async {
+                    await ref.read(membershipProvider.notifier).addReferralTransaction();
                     shareService.shareReferral(membership.id);
                   },
                   child: const Text(
