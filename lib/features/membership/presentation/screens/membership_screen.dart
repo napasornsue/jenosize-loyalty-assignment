@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:jenosize_loyalty_assignment/core/presentation/status.dart';
 import 'package:jenosize_loyalty_assignment/core/services/share_service.dart';
+import 'package:jenosize_loyalty_assignment/core/utils/validators.dart';
 import 'package:jenosize_loyalty_assignment/features/membership/domain/membership.dart';
 import 'package:jenosize_loyalty_assignment/features/membership/presentation/providers/membership_provider.dart';
 import 'package:jenosize_loyalty_assignment/features/membership/presentation/providers/welcome_message_provider.dart';
@@ -107,14 +108,16 @@ class _MembershipScreenState extends ConsumerState<MembershipScreen> {
               onPressed: state.status == Status.loading
                   ? null
                   : () async {
-                final name = _nameController.text.trim();
-                if (name.isEmpty) {
+                final name = _nameController.text;
+                final error = Validators.validateName(name);
+                if (error != null) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Please enter your name')),
+                    SnackBar(content: Text(error)),
                   );
                   return;
                 }
-                await ref.read(membershipProvider.notifier).joinMembership(name);
+
+                await ref.read(membershipProvider.notifier).joinMembership(name.trim());
                 _nameController.clear();
               },
               child: Text(
