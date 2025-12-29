@@ -6,17 +6,24 @@ final shareServiceProvider = Provider<ShareService>((ref) {
 });
 
 class ShareService {
-  Future<void> shareReferral(String membershipId) async {
-    final referralLink = Uri(
+  final SharePlus sharePlus;
+
+  ShareService({SharePlus? sharePlus})
+      : sharePlus = sharePlus ?? SharePlus.instance;
+
+  Uri buildReferralUri(String membershipId) {
+    return Uri(
       scheme: 'jenosize',
       host: 'assignment',
       path: '/referral',
-      queryParameters: {
-        'id': membershipId,
-      },
+      queryParameters: {'id': membershipId},
     );
+  }
 
-    await SharePlus.instance.share(
+  Future<void> shareReferral(String membershipId) async {
+    final referralLink = buildReferralUri(membershipId);
+
+    await sharePlus.share(
       ShareParams(uri: referralLink),
     );
   }

@@ -69,6 +69,21 @@ flutter run
 ```
 ---
 
+### 🧪 Running Tests
+Run all unit tests:
+```bash
+flutter test
+```
+Run tests with coverage:
+```bash
+flutter test --coverage
+brew install lcov # if lcov is not installed
+genhtml coverage/lcov.info -o coverage/html
+open coverage/html/index.html
+```
+![Flutter Tests](https://github.com/napasornsue/jenosize-loyalty-assignment/actions/workflows/test.yml/badge.svg)
+---
+
 ## Notes
 
 This project is a prototype and does not connect to a real backend.  
